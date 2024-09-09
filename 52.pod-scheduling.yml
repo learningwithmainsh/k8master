@@ -1,0 +1,57 @@
+#ubectl command to show labels and create labels
+#kubectl get nodes --show-labels
+#kubectl label nodes k8-worker-1 disktype=ssd
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nodeselector
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+  nodeSelector:
+    disktype: ssd
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nodename
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+  nodeName: k8-worker-1 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend-app
+spec:
+  containers:
+    - name: app
+      image: alpine
+      command:
+        - sleep
+        - '3600'
+      resources:
+        requests:
+          memory: 64Mi
+          cpu: 1000m
+  nodeSelector:
+    disktype: ssd:wq
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend-app-2
+spec:
+  containers:
+    - name: app
+      image: alpine
+      command:
+        - sleep
+        - '3600'
+      resources:
+        requests:
+          memory: 64Mi
+          cpu: 1000m
